@@ -21,6 +21,11 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.example.Main</mainClass>
+                        </manifest>
+                    </archive>
                     <finalName>app</finalName>
                 </configuration>
             </plugin>
