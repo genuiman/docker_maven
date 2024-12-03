@@ -1,23 +1,14 @@
-# Используем базовый образ Maven с OpenJDK
-FROM maven:3.8-openjdk-17 AS build
+# Используем официальный образ Maven
+FROM maven:3.9.4-eclipse-temurin-17
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем POM и загружаем зависимости
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# Копируем проект в контейнер
+COPY . .
 
-# Копируем исходный код и собираем проект
-COPY src ./src
-RUN mvn package
+# Компилируем и собираем проект
+RUN mvn clean package
 
-# Используем легковесный образ для запуска
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-
-# Копируем JAR-файл из предыдущего этапа
-COPY --from=build /app/target/app.jar .
-
-# Запускаем приложение
-CMD ["java", "-jar", "app.jar"]
+# Команда по умолчанию (опционально)
+CMD ["mvn", "clean", "install"]
